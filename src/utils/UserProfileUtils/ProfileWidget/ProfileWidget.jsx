@@ -32,7 +32,7 @@ let ProfileWidget = ({name, tag, data}) => {
                     </div>
                 </div>
                 <div className={css.footer}>
-                    Tomato
+                Cravess
                 </div>
             </div>
             <div className={css.gtw}>Get this widget <img src={rightArrowImg} className={css.rightArrowImg} alt='right arrow' /></div>
