@@ -34,11 +34,11 @@ let Footer = () => {
                     <a href="" className={footerCss.boxOpt}>Report Fraud</a>
                 </div>
                 <div className={[footerCss.box2, footerCss.box].join(' ')}>
-                    <div className={footerCss.boxTtl}>TOMAVERSE</div>
-                    <a href="" className={footerCss.boxOpt}>Tomato</a>
+                    <div className={footerCss.boxTtl}>Cravess</div>
+                    <a href="" className={footerCss.boxOpt}>Cravess</a>
                     <a href="" className={footerCss.boxOpt}>Feeding India</a>
                     <a href="" className={footerCss.boxOpt}>Hyperpure</a>
-                    <a href="" className={footerCss.boxOpt}>Tomaland</a>
+                    <a href="" className={footerCss.boxOpt}>Cravess</a>
                 </div>
                 <div className={[footerCss.box3, footerCss.box].join(' ')}>
                     <div className={footerCss.boxTtl}>FOR RESTAURANTS</div>
@@ -46,7 +46,7 @@ let Footer = () => {
                     <a href="" className={footerCss.boxOpt}>Apps For You</a>
 
                     <div className={footerCss.boxTtl}>FOR ENTERPRISES</div>
-                    <a href="" className={footerCss.boxOpt}>Tomato For Work</a>
+                    <a href="" className={footerCss.boxOpt}>Cravess For Work</a>
                 </div>
                 <div className={[footerCss.box4, footerCss.box].join(' ')}>
                     <div className={footerCss.boxTtl}>LEARN MORE</div>
