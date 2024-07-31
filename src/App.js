@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import HomePageBanner from './components/HomeComponents/HomePageBanner/HomePageBanner'
+import SmallCard from './utils/Cards/card1/SmallCard'
+import Collections from './components/HomeComponents/Collections/Collections'
+import PopularPlaces from './components/HomeComponents/PopularPlaces/PopularPlaces'
+import GetTheApp from './components/HomeComponents/GetTheApp/GetTheApp'
+import ExploreOptionsNearMe from './components/HomeComponents/ExploreOptionsNearMe/ExploreOptionsNearMe'
+import Footer from './components/Footer/Footer'
+
+import orderOnlineImg from './images/orderonline.jpg'
+import diningoutImg from './images/diningout.jpg'
+import proandproplusImg from './images/proandproplus.jpg'
+import nightlifeandclubsImg from './images/nightlifeandclubs.jpg'
+
+import css from './App.module.css'
+
+import { orderOnlinePage, diningOutPage, proAndProPlusPage, nightLifePage } from './helpers/constants';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+  return <>
+    <HomePageBanner />
+    <div className={css.bodySize}>
+      <div className={css.chooseTypeCards}>
+        <SmallCard imgSrc={orderOnlineImg} text="Order Online" link={"/show-case?page=" + orderOnlinePage} />
+        <SmallCard imgSrc={diningoutImg} text="Dining Out" link={'/show-case?page=' + diningOutPage} />
+        <SmallCard imgSrc={nightlifeandclubsImg} text="Night Life and Clubs" link={'/show-case?page=' + nightLifePage} />
+      </div>
+      <Collections />
+      <PopularPlaces />
     </div>
-  );
+    <GetTheApp />
+    <ExploreOptionsNearMe />
+    <Footer />
+  </>
 }
 
-export default App;
+export default App
