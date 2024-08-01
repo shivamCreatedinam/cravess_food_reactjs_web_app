@@ -74,6 +74,7 @@
     }
 
     .btns {
+        width: 19rem;
         display: flex;
         flex-wrap: wrap;
     }

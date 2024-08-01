@@ -21,5 +21,5 @@ let AddRestaurant = () => {
         <Footer />
     </div>
 }
-
+ 
 export default AddRestaurant;

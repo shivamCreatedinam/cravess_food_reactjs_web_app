@@ -26,6 +26,9 @@
     cursor: pointer;
 }
 
+.back {
+    display: none;
+}
 .mobileMenu {
     width: 100%;
     height: 100vh;
@@ -137,4 +140,12 @@
     .menuBar {
         display: block;
     }
+    .back {
+        display: block;
+        margin: 30px 20px;
+        color: white;
+        text-decoration: none;
+        font-size: 1.6rem;
+     }
 }
+

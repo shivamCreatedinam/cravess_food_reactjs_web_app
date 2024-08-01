@@ -1,46 +1,98 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { Link } from 'react-router-dom'
 
+import mobileHand from '../../../icons/smartphone.png'
 import close from '../../../icons/close.png'
 import downArrow from '../../../icons/down-arrow.png'
-import rightArrow from '../../../icons/right-arrow1.png'
 import profilePic from '../../../images/profilepic.jpg'
+
+import Login from '../../Auth/Login/Login'
+import Signup from '../../Auth/Signup/Signup'
 
 import css from './AddRestaurantMobileNavbar.module.css';
 
-let AddRestaurantMobileNavbar = ({ toogleMenu, setToggleMenu, setLoggedIn }) => {
-
-    let [state, setState] = useState(true);
-
-    let dropdownOptions = state ? css.optionsBox : `${css.optionsBox} ${css.dnone}`;
+let AddRestaurantMobileNavbar = ({ toogleMenu, setToggleMenu, page }) => {
+    let [menuDisplay, setMenuDisplay] = useState(false);
+    let [loggedIn, setLoggedIn] = useState(localStorage.getItem('auth') || false);
+    let [auth, setAuth] = useState({
+        closed: true,
+        login: false,
+        signup: false
+    });
 
     const logoutHandler = () => {
         setLoggedIn(false);
         localStorage.removeItem("auth");
     }
 
-    return <div className={css.navbarH}>
-        <div className={css.menu}>
-            <img className={css.menuBar} src={close} alt='menu bar' onClick={() => setToggleMenu(val => !val)} />
-            <Link to='/' className={css.title}>Cravess</Link>
-        </div>
-        <div className={css.navbar} onClick={() => setState(val => !val)}>
-            <span className={css.profile}>
-                <img src={profilePic} alt="profile pic" className={css.profilePic} />
-                <div className={css.profileName}>Profile</div>
-            </span>
-            <img src={downArrow} className={css.downArrow} alt='down arrow' />
-        </div>
-        <div className={dropdownOptions}>
-            <Link to='/my-restaurants' className={css.options}>
-                <div className={css.profileName}>My Restaurants</div>
-                <img src={rightArrow} className={css.rightArrow} alt='right arrow' />
-            </Link>
-            <div className={css.options} onClick={logoutHandler}>
-                <div className={css.profileName}>
-                    Logout
-                </div>
+    return <div className={css.navbar}>
+        <img className={css.menuBar} src={close} alt='menu bar' onClick={() => setToggleMenu(val => !val)} />
+
+        {/* <Link to="/" className={css.back}>&larr;</Link> */}
+        <div className={css.navbarInner}>
+            <div className={css.leftSide}>
+                {/* <img src={mobileHand} alt="mobile in hand icon" className={css.img} /> */}
+                {/* <Link to='/get-the-app' className={css.appTxt}>Get The App</Link> */}
             </div>
+            <div className={css.rightSide}>
+                {page !== 'add-restaurant' ? <Link to='/add-restaurant' className={css.menuItem} >Add restaurant</Link> : ''}
+                {loggedIn ? (<div className={css.menuItem}>
+                    <div className={css.profile} onClick={() => setMenuDisplay(val => !val)}>
+                        <img src={profilePic} alt="profile pic" className={css.profilePic} />
+                        <div className={css.profileName}>Profile</div>
+                        <img src={downArrow} alt="arrow" className={css.arrow} />
+                    </div>
+                    <div className={css.menu} style={{ display: menuDisplay ? "block" : "none" }}>
+                        <Link to='/user/ll/reviews' className={css.menuItemLinkTxt}>
+                            <div className={css.menuItemLink}>
+                                Profile
+                            </div>
+                        </Link>
+                        <Link to='/user/ll/notifications' className={css.menuItemLinkTxt}>
+                            <div className={css.menuItemLink}>
+                                Notifications
+                            </div>
+                        </Link>
+                        <Link to='/user/ll/bookmarks' className={css.menuItemLinkTxt}>
+                            <div className={css.menuItemLink}>
+                                Bookmarks
+                            </div>
+                        </Link>
+                        <Link to='/user/ll/reviews' className={css.menuItemLinkTxt}>
+                            <div className={css.menuItemLink}>
+                                Reviews
+                            </div>
+                        </Link>
+                        <Link to='/user/ll/network' className={css.menuItemLinkTxt}>
+                            <div className={css.menuItemLink}>
+                                Network
+                            </div>
+                        </Link>
+                        <Link to='/user/ll/find-friends' className={css.menuItemLinkTxt}>
+                            <div className={css.menuItemLink}>
+                                Find Friends
+                            </div>
+                        </Link>
+                        <Link to='/user/ll/settings' className={css.menuItemLinkTxt}>
+                            <div className={css.menuItemLink}>
+                                Settings
+                            </div>
+                        </Link>
+                        <div className={css.menuItemLinkTxt} onClick={logoutHandler}>
+                            <div className={css.menuItemLink}>
+                                Logout
+                            </div>
+                        </div>
+                    </div>
+                </div>) : (<>
+                    <div className={css.menuItem} onClick={() => setAuth({ closed: false, login: true, signup: false })}>Log in</div>
+                    <div className={css.menuItem} onClick={() => setAuth({ closed: false, login: false, signup: true })}>Sign up</div>
+                </>)}
+            </div>
+        </div>
+        <div className={css.modals}>
+            {auth?.login ? <Login setAuth={setAuth} setLoggedIn={setLoggedIn} /> : null}
+            {auth?.signup ? <Signup setAuth={setAuth} /> : null}
         </div>
     </div>
 }

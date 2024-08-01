@@ -137,6 +137,15 @@
         padding: 1rem 2rem;
     }
 
+    .logoBox {
+        width: 150px;
+        height: 30px;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+    
+
 }
 
 @media all and (max-width: 350px) {
@@ -148,5 +157,13 @@
 
     .filters {
         margin: 2rem 0 0 0;
+    }
+    
+    .logoBox {
+        width: 150px;
+        height: 30px;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
     }
 }

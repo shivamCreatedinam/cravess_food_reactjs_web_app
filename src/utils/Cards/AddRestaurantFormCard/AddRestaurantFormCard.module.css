@@ -55,3 +55,11 @@
 ::placeholder{
     color: var(--color-p1-text);
 }
+
+@media all and (max-width: 640px) {
+.outerDiv {
+    /* margin-bottom: 20rem; */
+
+}
+
+}

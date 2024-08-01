@@ -27,6 +27,8 @@ let NavigationBar = ({ toogleMenu, setToggleMenu, page }) => {
 
     return <div className={css.navbar}>
         <img className={css.menuBar} src={menuBar} alt='menu bar' onClick={() => setToggleMenu(val => !val)} />
+
+        {/* <Link to="/" className={css.back}>&larr;</Link> */}
         <div className={css.navbarInner}>
             <div className={css.leftSide}>
                 <img src={mobileHand} alt="mobile in hand icon" className={css.img} />
@@ -40,7 +42,7 @@ let NavigationBar = ({ toogleMenu, setToggleMenu, page }) => {
                         <div className={css.profileName}>Profile</div>
                         <img src={downArrow} alt="arrow" className={css.arrow} />
                     </div>
-                    <div className={css.menu} style={{display: menuDisplay ? "block" : ""}}>
+                    <div className={css.menu} style={{ display: menuDisplay ? "block" : "" }}>
                         <Link to='/user/ll/reviews' className={css.menuItemLinkTxt}>
                             <div className={css.menuItemLink}>
                                 Profile
