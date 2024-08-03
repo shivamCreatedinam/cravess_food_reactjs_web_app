@@ -3,16 +3,26 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import './RestaurantRegistration.css';
+import { Uploaddocs } from '../UploadDocs/Uploaddocs';
 
 export const RestaurantRegistration = () => {
   const [verify, setVerify] = useState(false);
-  const [restaurantLoggedIn, setrestaurantLoggedIn] = useState(true);
-  // const [RestaurantLoggedIn, setRestaurantLoggedIn] = useState(false);
+  const [restaurantLoggedIn, setRestaurantLoggedIn] = useState(true);
   const [token, setToken] = useState('');
-  const [accesstoken, setaccessToken] = useState('');
+  const [accessToken, setAccessToken] = useState('');
   const [mobile, setMobile] = useState('');
   const [timer, setTimer] = useState(300); // 5 minutes in seconds
   const [otpExpired, setOtpExpired] = useState(false);
+  const [isLoginSuccessful, setIsLoginSuccessful] = useState(false); // Add this state
+  const [Status, setStatus] = useState('')
+
+  const [verificationStatus, setVerificationStatus] = useState({
+    aadhar_verified: 0,
+    pan_verified: 0,
+    bank_verified: 0,
+    fssai_verified: 0,
+    gst_verified: 0,
+  });
 
   useEffect(() => {
     let countdown;
@@ -32,7 +42,7 @@ export const RestaurantRegistration = () => {
         console.log('OTP resent successfully:', response.data);
         setTimer(300); // Reset timer
         setOtpExpired(false);
-        setToken(response.data.data.emp_token)
+        setToken(response.data.data.emp_token);
       })
       .catch(error => {
         console.error('There was an error resending the OTP:', error);
@@ -63,8 +73,8 @@ export const RestaurantRegistration = () => {
         console.log('Form submitted successfully:', response.data);
         if (response.data.status) {
           setVerify(true);
-          setToken(response.data.data.temp_token)
-          setMobile(values.mobile)
+          setToken(response.data.data.temp_token);
+          setMobile(values.mobile);
         }
       })
       .catch(error => {
@@ -88,17 +98,13 @@ export const RestaurantRegistration = () => {
       .then(response => {
         console.log('Verification successful:', response.data);
         if (response.data.status) {
-          setrestaurantLoggedIn(true)
+          setRestaurantLoggedIn(true);
         }
-
       })
       .catch(error => {
         console.error('There was an error verifying the OTP:', error);
-
       });
   };
-
-
 
   const loginInitialValues = {
     email: '',
@@ -110,16 +116,22 @@ export const RestaurantRegistration = () => {
     password: Yup.string().required('Password is required'),
   });
 
-
-
   const handleLoginSubmit = (values, { setSubmitting }) => {
     axios.post('https://cravess.createdinam.com/superadmin/api/v1/store/login', values)
       .then(response => {
-        console.log('Login successful:', response.data);
+        console.log(response.data);
         if (response.data.status) {
-          setaccessToken(response.data.data.access_token)
-          // setRestaurantLoggedIn(true);
-          alert('sucess')
+          setAccessToken(response.data.data.access_token);
+          setIsLoginSuccessful(true); // Set login status to true
+          alert('Success');
+          setStatus(response.data.data.user.resto_rider_status);
+          setVerificationStatus({
+            aadhar_verified: response.data.data.user.aadhar_verified,
+            pan_verified: response.data.data.user.pan_verified,
+            bank_verified: response.data.data.user.bank_verified,
+            fssai_verified: response.data.data.user.fssai_verified,
+            gst_verified: response.data.data.user.gst_verified,
+          });
         }
       })
       .catch(error => {
@@ -128,128 +140,120 @@ export const RestaurantRegistration = () => {
       .finally(() => setSubmitting(false));
   };
 
-
   return (
-    <div className='main'>
-
-      {restaurantLoggedIn ? (
-        <div>
-           <div className="register-form">
-            <h1>Log In</h1>
-            <Formik
-              initialValues={loginInitialValues}
-              validationSchema={loginValidationSchema}
-              onSubmit={handleLoginSubmit}
-            >
-              {({ isSubmitting }) => (
-                <Form>
-                  <div className="form-control">
-                    <label htmlFor="email">Email</label>
-                    <Field type="email" id="email" name="email" />
-                    <ErrorMessage name="email" component="div" className="error" />
-                  </div>
-
-                  <div className="form-control">
-                    <label htmlFor="password">Password</label>
-                    <Field type="password" id="password" name="password" />
-                    <ErrorMessage name="password" component="div" className="error" />
-                  </div>
-
-                  <button type="submit" disabled={isSubmitting}>Log In</button>
-                </Form>
-              )}
-            </Formik>
-            <p>Don't have a Restaurant Account! <span className='login' onClick={() =>{setrestaurantLoggedIn(false)}}>Sign Up</span></p>
-          </div>
-        </div>
+    <div className="main">
+      {isLoginSuccessful ? ( // Check if login is successful
+        <Uploaddocs token={accessToken} data={verificationStatus} status={Status} />
       ) : (
         <div>
-          {!verify ? (
-            <div className="register-form">
-              <h1>Register</h1>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={onSubmit}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <div className="form-control">
-                      <label htmlFor="name">Name</label>
-                      <Field type="text" id="name" name="name" />
-                      <ErrorMessage name="name" component="div" className="error" />
-                    </div>
-
-                    <div className="form-control">
-                      <label htmlFor="email">Email</label>
-                      <Field type="email" id="email" name="email" />
-                      <ErrorMessage name="email" component="div" className="error" />
-                    </div>
-
-                    <div className="form-control">
-                      <label htmlFor="mobile">Mobile</label>
-                      <Field type="text" id="mobile" name="mobile" />
-                      <ErrorMessage name="mobile" component="div" className="error" />
-                    </div>
-
-                    <div className="form-control">
-                      <label htmlFor="password">Password</label>
-                      <Field type="password" id="password" name="password" />
-                      <ErrorMessage name="password" component="div" className="error" />
-                    </div>
-
-                    <div className="form-control">
-                      <label htmlFor="confirm_password">Confirm Password</label>
-                      <Field type="password" id="confirm_password" name="confirm_password" />
-                      <ErrorMessage name="confirm_password" component="div" className="error" />
-                    </div>
-
-                    <button type="submit" >Register</button>
-                  </Form>
-                )}
-              </Formik>
-              <p>Already have a Restaurant Account! <span className='login' onClick={() =>{setrestaurantLoggedIn(true)}}>Log In</span></p>
+          {restaurantLoggedIn ? (
+            <div>
+              <div className="register-form">
+                <h1>Log In</h1>
+                <Formik
+                  initialValues={loginInitialValues}
+                  validationSchema={loginValidationSchema}
+                  onSubmit={handleLoginSubmit}
+                >
+                  {({ isSubmitting }) => (
+                    <Form>
+                      <div className="form-control">
+                        <label htmlFor="email">Email</label>
+                        <Field type="email" id="email" name="email" />
+                        <ErrorMessage name="email" component="div" className="error" />
+                      </div>
+                      <div className="form-control">
+                        <label htmlFor="password">Password</label>
+                        <Field type="password" id="password" name="password" />
+                        <ErrorMessage name="password" component="div" className="error" />
+                      </div>
+                      <button type="submit" disabled={isSubmitting}>Log In</button>
+                    </Form>
+                  )}
+                </Formik>
+                <p>Don't have a Restaurant Account! <span className="login" onClick={() => setRestaurantLoggedIn(false)}>Sign Up</span></p>
+              </div>
             </div>
           ) : (
-            <div className="register-form">
-              <h1>Verify OTP</h1>
-              <p>{`Time remaining: ${Math.floor(timer / 60)}:${timer % 60}`}</p>
-              {otpExpired && (
-                <div>
-                  <p>OTP expired. Please click the button below to resend OTP.</p>
-                  <button onClick={handleResendOtp}>Resend OTP</button>
+            <div>
+              {!verify ? (
+                <div className="register-form">
+                  <h1>Register</h1>
+                  <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={onSubmit}
+                  >
+                    {({ isSubmitting }) => (
+                      <Form>
+                        <div className="form-control">
+                          <label htmlFor="name">Name</label>
+                          <Field type="text" id="name" name="name" />
+                          <ErrorMessage name="name" component="div" className="error" />
+                        </div>
+                        <div className="form-control">
+                          <label htmlFor="email">Email</label>
+                          <Field type="email" id="email" name="email" />
+                          <ErrorMessage name="email" component="div" className="error" />
+                        </div>
+                        <div className="form-control">
+                          <label htmlFor="mobile">Mobile</label>
+                          <Field type="text" id="mobile" name="mobile" />
+                          <ErrorMessage name="mobile" component="div" className="error" />
+                        </div>
+                        <div className="form-control">
+                          <label htmlFor="password">Password</label>
+                          <Field type="password" id="password" name="password" />
+                          <ErrorMessage name="password" component="div" className="error" />
+                        </div>
+                        <div className="form-control">
+                          <label htmlFor="confirm_password">Confirm Password</label>
+                          <Field type="password" id="confirm_password" name="confirm_password" />
+                          <ErrorMessage name="confirm_password" component="div" className="error" />
+                        </div>
+                        <button type="submit">Register</button>
+                      </Form>
+                    )}
+                  </Formik>
+                  <p>Already have a Restaurant Account! <span className="login" onClick={() => setRestaurantLoggedIn(true)}>Log In</span></p>
+                </div>
+              ) : (
+                <div className="register-form">
+                  <h1>Verify OTP</h1>
+                  <p>{`Time remaining: ${Math.floor(timer / 60)}:${timer % 60}`}</p>
+                  {otpExpired && (
+                    <div>
+                      <p>OTP expired. Please click the button below to resend OTP.</p>
+                      <button onClick={handleResendOtp}>Resend OTP</button>
+                    </div>
+                  )}
+                  <Formik
+                    initialValues={initialValues2}
+                    validationSchema={validationSchema2}
+                    onSubmit={onSubmit2}
+                  >
+                    {({ isSubmitting }) => (
+                      <Form>
+                        <div className="form-control">
+                          <label htmlFor="mobile_otp">Mobile OTP</label>
+                          <Field type="text" id="mobile_otp" name="mobile_otp" />
+                          <ErrorMessage name="mobile_otp" component="div" className="error" />
+                        </div>
+                        <div className="form-control">
+                          <label htmlFor="email_otp">Email OTP</label>
+                          <Field type="text" id="email_otp" name="email_otp" />
+                          <ErrorMessage name="email_otp" component="div" className="error" />
+                        </div>
+                        <button type="submit" disabled={otpExpired}>Verify</button>
+                      </Form>
+                    )}
+                  </Formik>
                 </div>
               )}
-              <Formik
-                initialValues={initialValues2}
-                validationSchema={validationSchema2}
-                onSubmit={onSubmit2}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <div className="form-control">
-                      <label htmlFor="mobile_otp">Mobile OTP</label>
-                      <Field type="text" id="mobile_otp" name="mobile_otp" />
-                      <ErrorMessage name="mobile_otp" component="div" className="error" />
-                    </div>
-
-                    <div className="form-control">
-                      <label htmlFor="email_otp">Email OTP</label>
-                      <Field type="text" id="email_otp" name="email_otp" />
-                      <ErrorMessage name="email_otp" component="div" className="error" />
-                    </div>
-
-                    <button type="submit" disabled={otpExpired}>Verify</button>
-                  </Form>
-                )}
-              </Formik>
             </div>
           )}
-
         </div>
-      )
-
-    }
+      )}
     </div>
   );
 };

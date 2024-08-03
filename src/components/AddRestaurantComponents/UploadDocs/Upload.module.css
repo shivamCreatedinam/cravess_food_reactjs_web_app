@@ -1,0 +1,36 @@
+
+.pending_image {
+    width: 400px;
+}
+
+.error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+
+
+
+  .mainDiv {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+
+ .para{
+    font-size: large;
+    background-color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.file_type {
+  font-size: 10px;
+  color: green;
+}
+
+.greenTick {
+  border: 1px solid black;
+ 
+}
