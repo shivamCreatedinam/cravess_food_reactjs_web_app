@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {thunk} from 'redux-thunk';
-import imageReducer from './slices/imageSlice';
+import locationSlice from './slices/Location';
 
 export const store = configureStore({
-    reducer: {
-        images: imageReducer,
-      },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+  reducer: {
+    location: locationSlice,
+  },
 });

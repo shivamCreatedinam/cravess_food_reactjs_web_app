@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import HomePageBanner from './components/HomeComponents/HomePageBanner/HomePageBanner';
 import SmallCard from './utils/Cards/card1/SmallCard';
 import Collections from './components/HomeComponents/Collections/Collections';
@@ -12,17 +13,20 @@ import diningoutImg from './images/diningout.jpg';
 import nightlifeandclubsImg from './images/nightlifeandclubs.jpg';
 
 import css from './App.module.css';
-
+import { setLocation, setCity } from './Redux/slices/Location';
 import { orderOnlinePage, diningOutPage, nightLifePage } from './helpers/constants';
 
 function App() {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          console.log('Latitude:', position.coords.latitude);
-          console.log('Longitude:', position.coords.longitude);
-          // You can save the position to state or context here
+          const { latitude, longitude } = position.coords;
+          dispatch(setLocation({ latitude, longitude }));
+          reverseGeocode(latitude, longitude);
+          console.log(latitude, longitude)
         },
         error => {
           console.error('Error getting location:', error);
@@ -31,7 +35,34 @@ function App() {
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
-  }, []);
+  }, [dispatch]);
+
+  function reverseGeocode(latitude, longitude) {
+    const apiKey = 'AIzaSyD9zoEIQ7IjlkSKF4XZ_RY2HXKeHgpDL0o';
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+  
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'OK') {
+          const results = data.results;
+          if (results.length > 0) {
+            const locality = results[0].address_components.find(component =>
+              component.types.includes("locality")
+            );
+            if (locality) {
+              dispatch(setCity(locality.long_name));
+              console.log(locality.long_name)
+            } else {
+              console.warn('Locality not found in address components');
+            }
+          }
+        } else {
+          alert("Geocode was not successful for the following reason: " + data.status);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  }
 
   return (
     <>
