@@ -2,6 +2,8 @@ import {useEffect, useState} from 'react';
 import { createPortal } from 'react-dom'
 
 import closeBtn from '../../../images/closeBtn.jpg';
+import { setToken } from '../../../Redux/slices/Token';
+import { useDispatch } from 'react-redux';
 
 import css from './EnterOTP.module.css'
 import axios from 'axios';
@@ -10,6 +12,7 @@ let EnterOTP = ({setModal, setLoggedIn = () => {}, setAuth = () => {}, type = 'l
 
     let [count, setCount] = useState(60);
     let [otp, setOtp] = useState('');
+    const dispatch = useDispatch();
 
     const loginHandler = async () => {
         console.log(mobile)
@@ -25,6 +28,8 @@ let EnterOTP = ({setModal, setLoggedIn = () => {}, setAuth = () => {}, type = 'l
                     setAuth(false);
                     setModal(false); 
                     setLoggedIn(true);
+                    console.log(response.data.data.access_token);
+                    dispatch(setToken(response.data.data.access_token))
                     alert("logged in successfully")
                 } else {
                     alert(response.data.message)

@@ -256,3 +256,21 @@
     background: url('../../images/tick.png') no-repeat center center;
     background-size: contain;
 }
+
+.info {
+    margin-top: 10px;
+}
+
+.selectInput {
+    width: 100%;
+    border: 1px solid gray;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+.updateBtn {
+    width: 7rem;
+    height: 2.6rem;
+    margin-top: 8px;
+    font-size: 1.1rem;
+}

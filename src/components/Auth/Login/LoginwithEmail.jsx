@@ -48,7 +48,7 @@ const EmailLogin = ({ setOpenEmail, setOTPModal, setAuth }) => {
     const handleSendOTP = async (e) => {
         e.preventDefault();
         if (!phone) {
-            alert("Please put a Valid Email")
+            alert("Please put a Valid Mobile No.")
         }
         else {
             try {
@@ -62,7 +62,7 @@ const EmailLogin = ({ setOpenEmail, setOTPModal, setAuth }) => {
                     alert(response.data.message);
                 }
             } catch (error) {
-                console.error('Error sending OTP:', error);
+                alert('Error sending OTP:', error);
             }
         }
     };

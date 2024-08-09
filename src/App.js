@@ -26,7 +26,7 @@ function App() {
           const { latitude, longitude } = position.coords;
           dispatch(setLocation({ latitude, longitude }));
           reverseGeocode(latitude, longitude);
-          console.log(latitude, longitude)
+          // console.log(latitude, longitude)
         },
         error => {
           console.error('Error getting location:', error);
@@ -38,7 +38,7 @@ function App() {
   }, [dispatch]);
 
   function reverseGeocode(latitude, longitude) {
-    const apiKey = 'AIzaSyD9zoEIQ7IjlkSKF4XZ_RY2HXKeHgpDL0o';
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
   
     fetch(url)
@@ -52,7 +52,7 @@ function App() {
             );
             if (locality) {
               dispatch(setCity(locality.long_name));
-              console.log(locality.long_name)
+              // console.log(locality.long_name)
             } else {
               console.warn('Locality not found in address components');
             }
