@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 import mobileHand from '../../../icons/smartphone.png'
 import close from '../../../icons/close.png'
@@ -19,10 +20,11 @@ let AddRestaurantMobileNavbar = ({ toogleMenu, setToggleMenu, page }) => {
         login: false,
         signup: false
     });
-
+    const navigate = useNavigate();
     const logoutHandler = () => {
         setLoggedIn(false);
         localStorage.removeItem("auth");
+        navigate('/');
     }
 
     return <div className={css.navbar}>

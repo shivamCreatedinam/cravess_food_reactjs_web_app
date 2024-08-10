@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 import mobileHand from '../../../icons/smartphone.png'
 import menuBar from '../../../icons/menu.png'
@@ -14,9 +15,12 @@ let NavigationBar = ({ toogleMenu, setToggleMenu }) => {
     let [menuDisplay, setMenuDisplay] = useState(false);
     let [loggedIn, setLoggedIn] = useState(localStorage.getItem('auth') || false);
 
+    const navigate = useNavigate();
+
     const logoutHandler = () => {
         setLoggedIn(false);
         localStorage.removeItem("auth");
+        navigate('/');
     }
 
     return <div className={css.navbar}>

@@ -38,7 +38,7 @@ function App() {
   }, [dispatch]);
 
   function reverseGeocode(latitude, longitude) {
-    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+    const apiKey = process.env.REACT_APP_MAP_KEY;
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
   
     fetch(url)
