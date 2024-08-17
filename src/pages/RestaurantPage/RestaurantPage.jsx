@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import { useSelector } from 'react-redux';
 
 import css from './RestaurantPage.module.css'
 
@@ -11,19 +12,17 @@ import Footer from '../../components/Footer/Footer'
 
 const RestaurantPage = () => {
 
+  const city = useSelector((state) => state.location.city);
+
   return <div className={css.outerDiv}>
     <NavigationBar />
     <div className={css.innerDiv}>
-        <div className={css.breadcrumb}>
+        <div className={css.breadcrumb}> 
             Home
             /
             India
             /
-            Hyderabad
-            /
-            Hyderabad City
-            /
-            Indira Nagar
+            { 'Hyderabad' || city }
         </div>
     </div>
     <HeroComponent />
